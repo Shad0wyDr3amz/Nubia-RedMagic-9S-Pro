@@ -1,0 +1,17 @@
+#
+#  The following variables are defined automatically and should not be changed
+#
+
+PATH="${COMPILER_PATH}:${PATH}"
+
+export ARCH="arm64"
+export TARGET="${ARCH}"
+export EXT_MODULE_FLAGS="-DZTE_OPERATOR_NAME=CRICKET -DZTE_REGION_NAME=NorthAmerican -DZTE_FEATURE_GMS_ENABLE=true -DZTE_FEATURE_GMS_INTERNATIONAL=true -DZTE_FEATURE_GMS_CHINA=false -DZTE_FEATURE_STOCKPLUS=true -DMFV_FEATURE_MIPOP=true -DMFV_FEATURE_GUESTURE=true -DZTE_FEATURE_HEARTYSERVICE=false -DZTE_FEATURE_POWERSAVE_USA=true -DZTE_FEATURE_AUTO_LAUNCH_INNER=true -DZTE_FEATURE_OVERSEAS_HEARTYSERVICE=true -DZTE_EXFAT_USES=opensource -DZTE_EXFAT_WHICH=fuse -DZTE_NTFS_SUPPORT=true -DNFC_USE_HCI=false -DBOARD_NFC_ENABLE=false -DZTE_PLATFORM"
+export CC="aarch64-linux-android-gcc"
+export CFLAGS="-I$KERNEL_SOURCE_PATH/arch/arm64/include -I$KERNEL_BUILD_PATH/arch/arm64/include/generated -I$KERNEL_SOURCE_PATH/include -I$KERNEL_BUILD_PATH/include -I$KERNEL_SOURCE_PATH/arch/arm64/include/uapi -I$KERNEL_BUILD_PATH/arch/arm64/include/generated/uapi -I$KERNEL_SOURCE_PATH/include/uapi -I$KERNEL_BUILD_PATH/include/generated/uapi -I$KERNEL_BUILD_PATH/fs -mlittle-endian -fno-strict-aliasing -fno-common -std=gnu89 -mgeneral-regs-only -fno-pic -fno-delete-null-pointer-checks -fno-PIE --param=allow-store-data-races=0 -fstack-protector-strong -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-var-tracking-assignments -g -fno-strict-overflow -fconserve-stack -mno-android -mcmodel=large -DZTE_OPERATOR_NAME=CRICKET -DZTE_REGION_NAME=NorthAmerican -DZTE_FEATURE_GMS_ENABLE=true -DZTE_FEATURE_GMS_INTERNATIONAL=true -DZTE_FEATURE_GMS_CHINA=false -DZTE_FEATURE_STOCKPLUS=true -DMFV_FEATURE_MIPOP=true -DMFV_FEATURE_GUESTURE=true -DZTE_FEATURE_HEARTYSERVICE=false -DZTE_FEATURE_POWERSAVE_USA=true -DZTE_FEATURE_AUTO_LAUNCH_INNER=true -DZTE_FEATURE_OVERSEAS_HEARTYSERVICE=true -DZTE_EXFAT_USES=opensource -DZTE_EXFAT_WHICH=fuse -DZTE_NTFS_SUPPORT=true -DNFC_USE_HCI=false -DBOARD_NFC_ENABLE=false -DZTE_PLATFORM -O1"
+
+export CROSS_COMPILE="aarch64-linux-android-"
+export CROSSCOMPILE="aarch64-linux-android-"
+CONFIGURE_HOST="--host=aarch64-linux-android"
+
+CONFIGURE_OPTIONS="--enable-check-without-libc"

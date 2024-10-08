@@ -1,0 +1,97 @@
+U9.5.4 -> U9.5.5
+Support for Kernel versions from 2.6.36 up to 4.13.x
+Added 'fast_mount' mount option for HFS+
+Fixed some issues with encoding of non-ASCII characters on HFS+
+Fixed high fragmentation issue with 'sparse' mount option
+'mkntfs' now sets a timestamp with microseconds on root (improves SAMBA write performance)
+
+U9.5.3 -> U9.5.4
+Support for Kernel versions from 2.6.36 up to 4.12.x
+Fixed issue with 64K files creation on FAT
+Added compatibility with the current implementation of sdcardfs in Android sources
+
+U9.5.2 -> U9.5.3
+Support for Kernel versions from 2.6.36 up to 4.11.x
+Fixed issue with directory's xattr listing after directory enumeration
+Improved read performance for some kernels
+
+U9.5.1 -> U9.5.2
+Support for Kernel versions from 2.6.36 up to 4.11.x
+Fixed issue with directory's xattr becoming inaccessible after directory enumeration
+Mount options can now be specified via /proc/fs/ufsd/options file
+test_system utility now supports --bvt alias for build validation suite
+
+U9.5 -> U9.5.1
+Support for Kernel versions from 2.6.36 up to 4.10.x
+Improved exFAT sequential write performance
+exFAT modify time resolution is now 10ms in accordance to MS specification
+exFAT access time is now rounded to 2s in accordance to MS specification
+Fixed zero-filled files having incorrect actual size on FAT32
+Fixed issue with writing to FAT32 volume returning 'Invalid argument' on some platforms
+Implemented "Standby mode" for FAT32
+Various stability improvements for FAT32
+
+U9.4.4 -> U9.5
+Support for Kernel versions from 2.6.36 up to 4.8.x
+Improved FAT32 driver stability in multithread scenarios
+Improved UFSD-FUSE driver stability
+Added read support of new system compression methods on NTFS from Windows 10/Server 2016
+Added UFSD integration patches for Android 7
+
+U9.4.3 -> U9.4.4
+Support for Kernel versions from 2.6.36 up to 4.6.x
+Improved xattr support (xattr without namespaces)
+Stability improvements in unsafe removal scenarios
+
+U9.4.2 -> U9.4.3
+Support for Kernel versions from 2.6.36 up to 4.6.x
+Improved UFSD driver stability (Fixed mv issue in UFSD driver)
+Improved work with symlinks
+Minimize f/s utilities package size (Added 'UFSD' utility instead of standalone mk*fs and chk*fs)
+Fixed working with volume labels via /proc files
+Removed "lazy open" for NTFS
+
+U9.4.1 -> U9.4.2
+Support for Kernel versions from 2.6.36 up to 4.6.x
+Fixed OOM issue on HFS+
+
+U9.4 -> U9.4.1
+Support for Kernel versions from 2.6.36 up to 4.6.x
+Improved NTFS performance (fixed backup performance issue on NTFS)
+Improved exFAT support (fixed several issues on exFAT)
+
+U9.3 -> 9.4
+Support for Kernel versions from 2.6.36 up to 4.4.x
+Improved memory usage for file operations
+Improved formatting utilities for working with 16+TB volumes (automatically set larger default allocation unit size)
+Improved support of the compressed files (fixed issue with compressed files in NTFS)
+
+U9.2.2 -> U9.3
+Support for Kernel versions from 2.6.36 up to 4.3.x
+Android 6 integration patches
+Added interface for working with native fs attributes
+Dos attrib change over SAMBA
+Improved TRIM/discard support for SSD storages
+Improved support for Windows 10 (symlinks for 'system compression')
+
+U92->U9.2.2
+Support for Kernel versions from 2.6.36 up to 4.3.x
+Added FAT32 file system support in UFSD driver
+Improved exFAT support (fixed several issues with possible deadlocks and unsafe storage removal)
+Improved UFSD-FUSE driver support
+Added UFSD integration patches for Android 5
+
+U91->U92
+Support for Kernel versions from 2.6.36 up to 3.19.x
+Improved NFS support (fixed several cases when files failed to transfer via NFS protocol)
+Implement performance and stability updates for SAMBA on embedded platforms
+Improved data stability for multiple CPU cores in cases of high load
+Fixed NTFS native journal replay on big-endian platforms
+
+U90->U91
+Support for Kernel versions from 2.6.36 up to 3.18.x
+Improved stability for working with NTFS volumes on unexpected storage removal
+Implement performance and stability updates for SAMBA on embedded platforms
+Improved support of compressed files on NTFS
+Improved HFS+ journal support (fixed several cases when driver was unable to replay HFS+ journal)
+

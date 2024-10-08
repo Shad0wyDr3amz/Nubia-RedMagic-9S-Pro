@@ -1,0 +1,7 @@
+ifneq (,$(ZTE_BOARD_NAME))
+dtbo-y          += $(ZTE_BOARD_NAME)/zte-$(ZTE_BOARD_NAME)-overlay.dtbo
+endif
+
+always-y	:= $(dtbo-y) $(dtb-y)
+subdir-y	:= $(dts-dirs)
+clean-files	:= *.dtb *.dtbo

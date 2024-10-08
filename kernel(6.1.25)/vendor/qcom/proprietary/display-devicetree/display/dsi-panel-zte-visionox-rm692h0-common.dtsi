@@ -1,0 +1,79 @@
+			zte,mdss-dsi-hbm-on-commands = [
+				15 01 00 00 00 00 02 FE 00
+				39 01 00 00 00 00 02 53 20
+				39 01 00 00 00 00 03 51 0f ff
+			];
+			zte,mdss-dsi-hbm-off-commands = [
+				15 01 00 00 00 00 02 FE 00
+				39 01 00 00 00 00 02 53 20
+				39 01 00 00 00 00 03 51 03 22
+			];
+			zte,mdss-dsi-aod-low-commands = [
+				15 01 00 00 00 00 02 FE 00
+				39 01 00 00 00 00 03 51 00 05
+			];
+			zte,mdss-dsi-aod-mid-commands = [
+				15 01 00 00 00 00 02 FE 00
+				39 01 00 00 00 00 03 51 06 DD
+			];
+			zte,mdss-dsi-aod-high-commands = [
+				15 01 00 00 00 00 02 FE 00
+				39 01 00 00 00 00 03 51 0f fe
+			];
+			zte,mdss-dsi-restore-bl-commands = [
+				15 01 00 00 00 00 02 FE 00
+				39 01 00 00 00 00 03 51 03 FF
+			];
+			zte,mdss-dsi-acl-off-commands = [
+				15 01 00 00 00 00 02 FE 00
+				15 01 00 00 00 00 02 55 00
+			];
+			zte,mdss-dsi-aod-off-hbm-on-commands = [
+				15 01 00 00 00 00 02 FE 00
+				05 01 00 00 00 00 01 38
+				39 01 00 00 00 00 03 51 0f ff
+			];
+			zte,mdss-dsi-reg-read-commands = [
+			    06 01 00 00 00 00 01 A0
+			];
+			zte,mdss-dsi-hbm-off-aod-on-commands = [
+				15 01 00 00 00 00 02 FE 00
+				39 01 00 00 00 00 03 51 00 00
+				05 01 00 00 00 00 01 39
+				39 01 00 00 00 00 03 51 01 20
+			];
+
+			zte,mdss-dsi-dim-on-commands = [
+				15 01 00 00 00 00 02 FE 00
+				15 01 00 00 00 00 02 53 28
+			];
+			zte,mdss-dsi-acl-off-commands = [
+				15 01 00 00 00 00 02 FE 00
+				15 01 00 00 00 00 02 55 10
+			];
+			zte,mdss-dsi-acl-low-commands = [
+                15 01 00 00 00 00 02 FE 00
+                15 01 00 00 00 00 02 55 11
+			];
+			zte,mdss-dsi-acl-mid-commands = [
+				15 01 00 00 00 00 02 FE 00
+				15 01 00 00 00 00 02 55 12
+			];
+			zte,mdss-dsi-acl-high-commands = [
+				15 01 00 00 00 00 02 FE 00
+				15 01 00 00 00 00 02 55 13
+			];
+			zte,mdss-dsi-hbm-on-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-hbm-off-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-aod-low-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-aod-mid-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-aod-high-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-restore-bl-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-aod-off-hbm-on-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-reg-read-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-hbm-off-aod-on-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-dim-on-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-acl-off-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-acl-low-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-acl-mid-commands-state = "dsi_lp_mode";
+			zte,mdss-dsi-acl-high-commands-state = "dsi_lp_mode";

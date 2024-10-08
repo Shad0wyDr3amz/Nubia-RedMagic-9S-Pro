@@ -1,0 +1,17 @@
+#
+#  The following variables are defined automatically and should not be changed
+#
+
+PATH="${COMPILER_PATH}:${PATH}"
+
+export ARCH="arm64"
+export TARGET="${ARCH}"
+export EXT_MODULE_FLAGS=""
+export CC="aarch64-linux-android-gcc"
+export CFLAGS="-I$KERNEL_SOURCE_PATH/arch/arm64/include -I$KERNEL_BUILD_PATH/arch/arm64/include/generated/uapi -I$KERNEL_BUILD_PATH/arch/arm64/include/generated -I$KERNEL_SOURCE_PATH/include -I$KERNEL_BUILD_PATH/include -I$KERNEL_SOURCE_PATH/arch/arm64/include/uapi -I$KERNEL_BUILD_PATH/arch/arm64/include/generated/uapi -I$KERNEL_SOURCE_PATH/include/uapi -I$KERNEL_BUILD_PATH/include/generated/uapi -I$KERNEL_BUILD_PATH/fs -mlittle-endian -fno-strict-aliasing -fno-common -std=gnu89 -fno-PIE -mgeneral-regs-only -fno-pic -fno-asynchronous-unwind-tables -fno-delete-null-pointer-checks --param=allow-store-data-races=0 -DCC_HAVE_ASM_GOTO -fstack-protector-strong -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-var-tracking-assignments -g -fno-strict-overflow -fconserve-stack -mno-android -DZTE_PLATFORM -mcmodel=large -O1"
+
+export CROSS_COMPILE="aarch64-linux-android-"
+export CROSSCOMPILE="aarch64-linux-android-"
+CONFIGURE_HOST="--host=aarch64-linux-android"
+
+CONFIGURE_OPTIONS="--enable-check-without-libc"

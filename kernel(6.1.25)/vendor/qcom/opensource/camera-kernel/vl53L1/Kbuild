@@ -1,0 +1,47 @@
+#
+# Kbuild for the vl53L1 drivers.
+#
+
+ccflags-y	+= -I$(src)/inc -I$(src)
+
+
+ccflags-y	+= -I$(src)/protected/inc
+ccflags-y	+= -DVL53L1_FULL_KERNEL
+
+
+
+ccflags-y	+= -DVL53L3
+
+
+# define this environment variable if you want to compile driver for an old
+# kernel
+TOF_KROOT=vl53L1
+
+camera-y += \
+	$(TOF_KROOT)/stmvl53l1_module.o \
+	$(TOF_KROOT)/stmvl53l1_module-i2c.o \
+	$(TOF_KROOT)/vl53l1_platform_ipp.o \
+	$(TOF_KROOT)/protected/src/vl53l1_hist_funcs.o \
+	$(TOF_KROOT)/protected/src/vl53l1_xtalk.o \
+	$(TOF_KROOT)/protected/src/vl53l1_hist_algos_gen3.o \
+	$(TOF_KROOT)/protected/src/vl53l1_hist_core.o \
+	$(TOF_KROOT)/protected/src/vl53l1_sigma_estimate.o \
+	$(TOF_KROOT)/protected/src/vl53l1_dmax.o \
+	$(TOF_KROOT)/protected/src/vl53l1_hist_algos_gen4.o \
+	$(TOF_KROOT)/stmvl53l1_i2c.o \
+	$(TOF_KROOT)/stmvl53l1_log.o \
+	$(TOF_KROOT)/src/vl53l1_api.o \
+	$(TOF_KROOT)/src/vl53l1_api_core.o \
+	$(TOF_KROOT)/src/vl53l1_api_strings.o \
+	$(TOF_KROOT)/src/vl53l1_error_strings.o \
+	$(TOF_KROOT)/src/vl53l1_core.o \
+	$(TOF_KROOT)/src/vl53l1_register_funcs.o \
+	$(TOF_KROOT)/src/vl53l1_api_preset_modes.o \
+	$(TOF_KROOT)/src/vl53l1_api_calibration.o \
+	$(TOF_KROOT)/src/vl53l1_silicon_core.o \
+	$(TOF_KROOT)/src/vl53l1_zone_presets.o \
+	$(TOF_KROOT)/src/vl53l1_nvm.o \
+	$(TOF_KROOT)/src/vl53l1_api_debug.o \
+	$(TOF_KROOT)/src/vl53l1_core_support.o \
+	$(TOF_KROOT)/src/vl53l1_wait.o \
+	$(TOF_KROOT)/src/vl53l1_nvm_debug.o

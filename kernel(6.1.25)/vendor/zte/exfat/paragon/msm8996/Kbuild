@@ -1,0 +1,36 @@
+EXTRA_CFLAGS := \
+  -DUFSD_BUILTINT_UTF8 \
+  -DUFSD_DEVICE=ufsd \
+  -DUFSD_DISABLE_UGM \
+  -DUFSD_TRACE \
+  -DUFSD_USE_ASM_DIV64 \
+  -DNDEBUG \
+  -g0 \
+  $(call cc-disable-warning,date-time) \
+  "-DPACKAGE_TAG=\"lke_9.5.5_b20\""
+
+
+
+
+EXTRA_LDFLAGS := -s -O2 -d -X
+EXTRA_CFLAGS += -I$(src)/ifslinux
+EXTRA_CFLAGS += -include fs_conf.h -include hash_val.h
+
+ufsd-src := \
+  ifslinux/ufsdvfs.c \
+  ifslinux/vfsdebug.c \
+  ifslinux/config_check.c
+
+jnl-src := \
+  ifslinux/ufsdjnl.c
+
+
+ufsd-lib := ifslinux/objfre/libufsd_arm64.bin
+
+ufsd-objs := $(ufsd-src:.c=.o) $(ufsd-lib)
+ufsd-y := $(ufsd-src:.c=.o) $(ufsd-lib)
+
+jnl-objs := $(jnl-src:.c=.o)
+jnl-y := $(jnl-src:.c=.o)
+obj-m := jnl.o ufsd.o
+

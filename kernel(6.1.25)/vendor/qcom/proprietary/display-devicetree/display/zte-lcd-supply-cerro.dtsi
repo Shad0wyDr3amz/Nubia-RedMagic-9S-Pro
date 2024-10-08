@@ -1,0 +1,71 @@
+#include "pineapple-sde-display-mtp.dtsi"
+#include "dsi-panel-zte-bf068-rm692h0-6p8-plus-dsc-cmd.dtsi"
+
+&soc {
+	/* add by zte for lcd new panel begin*/
+	display_panel_vddio: display_panel_vddio {
+		compatible = "qti-regulator-fixed";
+		regulator-name = "display_panel_vddio";
+		gpio = <&tlmm 14 0>;
+		enable-active-high;
+		regulator-boot-on;
+	};
+	display_panel_vddd: display_panel_vddd {
+		compatible = "qti-regulator-fixed";
+		regulator-name = "display_panel_vddd";
+		gpio = <&tlmm 125 0>;
+		enable-active-high;
+		regulator-boot-on;
+	};
+	dsi_panel_pwr_supply_cerro: dsi_panel_pwr_supply_cerro {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vddiocerro";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <200000>;
+			qcom,supply-disable-load = <80>;
+			qcom,supply-post-on-sleep = <1>;
+		};
+
+		qcom,panel-supply-entry@1 {
+			reg = <1>;
+			qcom,supply-name = "vdddcerro";
+			qcom,supply-min-voltage = <1200000>;
+			qcom,supply-max-voltage = <1200000>;
+			qcom,supply-enable-load = <299000>;
+			qcom,supply-disable-load = <0>;
+			qcom,supply-post-on-sleep = <5>;
+		};
+
+		qcom,panel-supply-entry@2 {
+			reg = <2>;
+			qcom,supply-name = "vdd";
+			qcom,supply-min-voltage = <1200000>;
+			qcom,supply-max-voltage = <1200000>;
+			qcom,supply-enable-load = <299000>;
+			qcom,supply-disable-load = <0>;
+			qcom,supply-post-on-sleep = <5>;
+		};
+
+		qcom,panel-supply-entry@3 {
+			reg = <3>;
+			qcom,supply-name = "vci";
+			qcom,supply-min-voltage = <3000000>;
+			qcom,supply-max-voltage = <3000000>;
+			qcom,supply-enable-load = <20000>;
+			qcom,supply-disable-load = <0>;
+			qcom,supply-post-on-sleep = <5>;
+			qcom,supply-pre-off-sleep = <5>;
+			qcom,supply-post-off-sleep = <5>;	
+		};
+	};
+	
+};
+&sde_dsi {
+	vddiocerro-supply = <&display_panel_vddio>;
+	vdddcerro-supply = <&display_panel_vddd>;
+};

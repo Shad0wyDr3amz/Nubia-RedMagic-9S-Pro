@@ -1,0 +1,108 @@
+&soc {
+	qcom,msm-vendor-imem@14680BF8 {
+        reg = <0x14680BF8 0x200>; /* Address and size of IMEM */
+		ranges = <0x0 0x14680BF8 0x200>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		efs_golden_copy@04 {
+			compatible = "qcom,msm-imem-efs-golden-copy";
+			reg = <0x04 8>;
+		};
+
+		pm-count-time@0c {
+			compatible = "qcom,msm-vendor-imem-pm-count-time";
+			reg = <0x0c 24>;
+		};
+
+		sd_dump_mode@2c {
+			compatible = "qcom,msm-vendor-imem-sd_dump_mode";
+			reg = <0x2c 4>;
+		};
+
+		board_id@60 {
+			compatible = "qcom,msm-imem-board-id";
+			reg = <0x60 4>;
+		};
+
+		vlog_memory_cookie@64 {
+			compatible = "qcom,msm-vendor-imem-vlog_memory_cookie";
+			reg = <0x64 4>;
+		};
+
+		vlog_memory_addr@68 {
+			compatible = "qcom,msm-vendor-imem-vlog_memory_addr";
+			reg = <0x68 4>;
+		};
+
+		vlog_memory_size@6c {
+			compatible = "qcom,msm-imem-vlog_memory_size";
+			reg = <0x6c 4>;
+		};
+
+		ddr_memory_manufacture@d8 {
+			compatible = "qcom,msm-imem-ddr_memory_manufacture";
+			reg = <0xd8 4>;
+		};
+
+		ddr_memory_type@dc {
+			compatible = "qcom,msm-imem-ddr_memory_type";
+			reg = <0xdc 4>;
+		};
+
+		ddr_memory_size@e0 {
+			compatible = "qcom,msm-imem-ddr_memory_size";
+			reg = <0xe0 4>;
+		};
+
+		s2_reset_type@e4 {
+			compatible = "qcom,msm-imem-s2_reset_type";
+			reg = <0xec 4>;
+		};
+
+		rf_version_id@ec {
+			compatible = "qcom,msm-imem-rf_version_id";
+			reg = <0xf4 4>;
+		};
+	};
+
+	charger_policy_service {
+		compatible = "zte,charger-policy-service";
+		status="okay";
+		policy,enable = <1>;
+		policy,retry-times = <10>;
+		policy,expired-mode-enable = <1>;
+		policy,low-temp-enable = <0>;
+		policy,have-power-path = <1>;
+		policy,timeout-seconds = <64800>;/* 18 hours */
+		policy,expired-max-capacity = <90>;
+		policy,expired-min-capacity = <70>;
+		policy,demo-max-capacity = <90>;
+		policy,demo-min-capacity = <70>;
+		policy,no-powerpath-delta-capacity = <10>;
+		policy,battery-phy-name = "battery";
+		policy,interface-phy-name = "interface";
+		policy,cas-phy-name = "cas";
+	};
+
+	zte_misc_service {
+		compatible = "zte-misc";
+		status="okay";
+	};
+};
+
+&battery_charger {
+	/* external thermal-mitigation for different case,each case 10 levels,base is level=1
+	usb screen off
+	usb screen on 
+	wls screen on
+	wls screen off*/
+	qcom,thermal-mitigation = <13000000 12000000 10000000 8000000 6000000 5000000 4000000 2000000 1500000 1000000
+								10000000 8000000 6000000 5000000 4000000 3000000 2000000 1500000 1000000 800000
+								10000000 8000000 6000000 4000000 3000000 2000000 1500000 1000000 500000 300000
+								 8000000 6000000 5000000 1000000 1000000 1000000  800000  500000 500000 300000
+								>;
+	qcom,shutdown-voltage = <3200>;
+	/* enable fast_capacity */
+	qcom,fast-capacity-enable;
+};

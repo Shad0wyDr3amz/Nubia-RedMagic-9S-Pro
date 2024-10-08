@@ -1,0 +1,6 @@
+Files in this package may be used to rebuild ufsd.ko/jnl.ko modules in case of kernel changes.
+In order to do so, edit `build-ufsd.conf' file and enter correct values for all variables,
+then execute `build-ufsd.sh' script.
+
+Note that the package is for internal use only and cannot be provided to any 3rd party.
+

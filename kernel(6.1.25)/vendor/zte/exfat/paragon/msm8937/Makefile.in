@@ -1,0 +1,161 @@
+
+ifdef src
+    src := $(src)/
+endif
+
+#Module
+MODULE_SRC := ifslinux
+ifeq (@BUILD_WITH_DEBUG@,1)
+MODULE_NAME := @MODULE_NAME@_debug
+else
+MODULE_NAME := @MODULE_NAME@
+endif
+
+ifeq (@BUILD_WITH_JNL@,1)
+ifeq (@BUILD_WITH_DEBUG@,1)
+MODULE_NAME2 := jnl_debug
+else
+MODULE_NAME2 := jnl
+endif
+endif
+
+hostprogs-y := $(MODULE_SRC)/crc32_calc
+
+MODULE_LIBNAME := lib@PACKAGE_NAME@
+MODULE_OBJECTS := $(MODULE_SRC)/ufsdvfs.o $(MODULE_SRC)/vfsdebug.o $(MODULE_SRC)/config_check.o
+
+MODULE_EXTRA_FLAGS := -include $(src)$(MODULE_SRC)/fs_conf.h -DUFSD_DEVICE=@MODULE_NAME@ -DUFSD_USE_ASM_DIV64
+ifeq (@BUILD_WITH_DEBUG@,1)
+MODULE_EXTRA_FLAGS += -DUFSD_DEBUG -g3 -ggdb3
+LDFLAGS   += -d
+else
+MODULE_EXTRA_FLAGS += -DNDEBUG -g0
+#In some cases -x breaks exports
+#LDFLAGS   += -s -O2 -d -x -X
+LDFLAGS   += -s -O2 -d -X
+endif
+
+ifeq (@HAVE_DRV_CONFIG@,1)
+MODULE_EXTRA_FLAGS += -include drv_config.h
+endif
+
+ifeq (@BUILD_WITH_TRACE@,1)
+    MODULE_EXTRA_FLAGS += -DUFSD_TRACE
+endif
+
+ifeq (@BUILD_WITH_TRACEK@,0)
+    MODULE_EXTRA_FLAGS += -DUFSD_NO_PRINTK
+endif
+
+ifndef CONFIG_UFSD_FS
+    CONFIG_UFSD_FS = m
+endif
+
+MODULE_OBJECTS += $(MODULE_SRC)/$(MODULE_LIBNAME).bin
+$(MODULE_NAME)-objs := $(MODULE_OBJECTS)
+$(MODULE_NAME)-y := $(MODULE_OBJECTS)
+
+ifeq (@BUILD_WITH_JNL@,1)
+$(MODULE_NAME2)-objs := $(MODULE_SRC)/ufsdjnl.o
+$(MODULE_NAME2)-y    := $(MODULE_SRC)/ufsdjnl.o
+obj-m := $(MODULE_NAME2).o $(MODULE_NAME).o
+else
+obj-m := $(MODULE_NAME).o
+endif
+
+## Add diagnostic module
+#kdiag-objs := $(MODULE_SRC)/kdiag.o
+#kdiag-y := $(MODULE_SRC)/kdiag.o
+#obj-m += kdiag.o
+
+EXTRA_CFLAGS +=	 $(MODULE_EXTRA_FLAGS)
+EXTRA_CFLAGS += -Wall -Werror -Wno-unknown-pragmas
+
+ifdef PACKAGE_TAG
+EXTRA_CFLAGS += "-DPACKAGE_TAG=\"$(PACKAGE_TAG)\""
+endif
+
+EXT_MODULE_FLAGS += $(call cc-disable-warning,date-time)
+
+ifdef EXT_MODULE_FLAGS
+EXTRA_CFLAGS += $(EXT_MODULE_FLAGS)
+endif
+
+CFLAGS_ufsdvfs.o := -include $(obj)/$(MODULE_SRC)/hash_val.h
+CFLAGS_ufsdjnl.o := -include $(obj)/$(MODULE_SRC)/hash_val.h
+
+CFLAGS_config_check.o := -include $(obj)/$(MODULE_SRC)/hash_val.h
+
+$(obj)/$(MODULE_SRC)/ufsdjnl.o: $(obj)/$(MODULE_SRC)/hash_val.h
+$(obj)/$(MODULE_SRC)/ufsdvfs.o: $(obj)/$(MODULE_SRC)/hash_val.h
+
+$(obj)/$(MODULE_SRC)/config_check.o: $(obj)/$(MODULE_SRC)/hash_val.h
+
+$(obj)/$(MODULE_SRC)/hash_val.h: $(hostprogs-y)
+	$(shell echo "extern char ufsd_hash_check_result[];"     >  $(obj)/$(MODULE_SRC)/hash_val.h)
+	$(shell echo "extern void ufsd_check_config_hash(void);" >> $(obj)/$(MODULE_SRC)/hash_val.h)
+	$(shell echo "#define UFSD_HASH_VAL_H" >> $(obj)/$(MODULE_SRC)/hash_val.h)
+ifeq ($(shell test -e @KERNEL_BUILD_DIR@/.config && echo -n yes), yes)
+	@echo "Calculated hash of Kernel .config: `$(src)$(MODULE_SRC)/crc32_calc @KERNEL_BUILD_DIR@/.config`"
+	$(shell echo "#define UFSD_KCONFIG_HASH_VAL `$(src)$(MODULE_SRC)/crc32_calc @KERNEL_BUILD_DIR@/.config`" >> $(obj)/$(MODULE_SRC)/hash_val.h)
+else
+	@echo "Hash not calculated because config was not found"
+	$(shell echo "#undef UFSD_KCONFIG_HASH_VAL" >> $(obj)/$(MODULE_SRC)/hash_val.h)
+endif
+
+$(src)$(MODULE_SRC)/$(MODULE_LIBNAME).bin:
+	@@LN_S@ "@UFSD_LIBRARY@" "$(src)$(MODULE_SRC)/$(MODULE_LIBNAME).bin"
+
+clean:
+	# rename *.a and *.so libs to *.a.ufsd and *.so.ufsd so kernel's "make clean" won't delete them
+	@if [ -d linutil/objfre ]; then for file in $(wildcard linutil/objfre/*.a) $(wildcard linutil/objfre/*.so); do mv -n $$file $$file.ufsd; done; fi
+	@$(MAKE) -C "@KERNEL_SOURCE_DIR@" SUBDIRS="@PWD@" clean 2>&1 > /dev/null
+	# and rename them back
+	@if [ -d linutil/objfre ]; then for file in $(wildcard linutil/objfre/*.a) $(wildcard linutil/objfre/*.so); do mv -n $$file.ufsd $$file; done; fi
+	@@RM@ -Rf "$(src)$(MODULE_SRC)/$(MODULE_LIBNAME).bin"
+	@[ -f $(src)$(MODULE_SRC)/hash_val.h ] && @RM@ $(MODULE_SRC)/hash_val.h || @TRUE@
+
+-include $(TOPDIR)/Rules.make
+
+$(MODULE_NAME).@MODULE_EXT@:
+	@$(MAKE) -C "@KERNEL_SOURCE_DIR@" M="@PWD@" O="@KERNEL_BUILD_DIR@" modules V=1 2>&1
+
+driver:$(MODULE_NAME).@MODULE_EXT@
+	@OBJCOPY_MODULE@
+	@STRIP_MODULE@
+	-@STRIP_MODULE@
+
+ifeq (@ENABLE_INSTALL@,1)
+install_commands := @MODPROBE@ -qr $(MODULE_NAME) 2>&1 > /dev/null ;
+install_commands += @MKDIR@ -p @KERNEL_INSTALL_DIR@ 2>&1 ;
+install_commands += @CP@ -f $(MODULE_NAME).@MODULE_EXT@ @KERNEL_INSTALL_DIR@ 2>&1 ;
+ifeq (@BUILD_WITH_JNL@,1)
+install_commands += @MODPROBE@ -qr $(MODULE_NAME2) 2>&1 > /dev/null ;
+install_commands += @CP@ -f $(MODULE_NAME2).@MODULE_EXT@ @KERNEL_INSTALL_DIR@ 2>&1 ;
+endif
+install_commands += @DEPMOD@ -a 2>&1 ;
+install_commands += @MODPROBE@ $(MODULE_NAME) 2>&1 ;
+
+driver_install: $(MODULE_NAME).@MODULE_EXT@
+ifeq ($(shell @ID@ -u),0)
+	@$(install_commands)
+else
+	@echo -e "\033[33mEnter Root password to install driver\033[0m"
+	@@SU@ -c "$(install_commands)"
+endif
+
+uninstall_commands := @MODPROBE@ -qr $(MODULE_NAME) 2>&1 ;
+ifeq (@BUILD_WITH_JNL@,1)
+uninstall_commands += @MODPROBE@ -qr $(MODULE_NAME2) 2>&1 > /dev/null ;
+endif
+uninstall_commands += @RM@ -Rf @KERNEL_INSTALL_DIR@ 2>&1 ;
+uninstall_commands += @DEPMOD@ -a 2>&1 ;
+
+driver_uninstall:
+ifeq ($(shell @ID@ -u),0)
+	@$(uninstall_commands)
+else
+	@echo -e "\033[33mEnter Root password to uninstall driver\033[0m"
+	@@SU@ -c "$(uninstall_commands)"
+endif
+endif

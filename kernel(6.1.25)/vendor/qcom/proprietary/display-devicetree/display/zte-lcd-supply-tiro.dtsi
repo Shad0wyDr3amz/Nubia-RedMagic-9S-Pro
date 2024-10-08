@@ -1,0 +1,52 @@
+#include "pineapple-sde-display-mtp.dtsi"
+#include "dsi-panel-zte-bf068-rm692h0-6p8-magic9-dsc-cmd.dtsi"
+
+&soc {
+	/* add by zte for lcd new panel begin*/
+	display_panel_vddio: display_panel_vddio {
+		compatible = "qti-regulator-fixed";
+		regulator-name = "display_panel_vddio";
+		gpio = <&tlmm 91 0>;
+		enable-active-high;
+		regulator-boot-on;
+	};
+	dsi_panel_pwr_supply_tiro: dsi_panel_pwr_supply_tiro {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <200000>;
+			qcom,supply-disable-load = <80>;
+			qcom,supply-post-on-sleep = <1>;
+		};
+
+		qcom,panel-supply-entry@1 {
+			reg = <1>;
+			qcom,supply-name = "vdddtiro";
+			qcom,supply-min-voltage = <1200000>;
+			qcom,supply-max-voltage = <1200000>;
+			qcom,supply-enable-load = <299000>;
+			qcom,supply-disable-load = <0>;
+			qcom,supply-post-on-sleep = <5>;
+		};
+
+		qcom,panel-supply-entry@2 {
+			reg = <2>;
+			qcom,supply-name = "vci";
+			qcom,supply-min-voltage = <3000000>;
+			qcom,supply-max-voltage = <3000000>;
+			qcom,supply-enable-load = <20000>;
+			qcom,supply-disable-load = <0>;
+			qcom,supply-post-on-sleep = <5>;
+			qcom,supply-pre-off-sleep = <5>;
+			qcom,supply-post-off-sleep = <5>;
+		};
+	};
+};
+&sde_dsi {
+	vdddtiro-supply = <&display_panel_vddio>;
+};

@@ -1,0 +1,1 @@
+../vendor/qcom/opensource/core-utils/build/stop_scan.mk
